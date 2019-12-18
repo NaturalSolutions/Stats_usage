@@ -1,5 +1,7 @@
 # Stats_usage
+
 Tiny project for logging web apps usage communicated through websockets into a Sql Server DB
+_____
 
 Start server that way:
 python -u server.py
@@ -17,9 +19,10 @@ Port listened by the back: 5655
 
 No authentication system when sending data to the back, anyone can log anything
 
--------------------------------------
+---------------------------------------
 
 Back will expect json strings formated that way:
+
 {
 	"type":"action",
 	"action":"my action",
@@ -27,24 +30,29 @@ Back will expect json strings formated that way:
 }
 
 Property "action" may have the following values:
--session
--visit
--click
--serverCall
+
+- session
+- visit
+- click
+- serverCall
 
 -------------------------------------
 
 Each action has a compulsory list of parameters that must be sent into the "data" parameter:
--session: "user_id" (int), "site" (string)
-	user_id => ID of the user as found in SECURITE database
-	site => Sitename as found in SECURITE database
--visit: "page" (string), "app" (string), "home" (bit 0/1)
-	page => The visited page (may or not include the post parameters)
-	app => The application name as found in SECURITE database
-	home => Wether the page can be considered as an entry point for the app (= homepage)
--click: "loc_x" (double), "loc_y" (double), "el" (string)
-	loc_x => X location for the click, should be sent in percentage (0% is the left of the screen, 100% the right)
-	loc_y => Y location for the click, should be sent in percentage (0% is the top of the screen, 100% the bottom)
-	el => The clicked html element
--serverCall: "infos" (string)
-	infos=> Informations about the call made by the web app to its back end (api path, parameters ...)
+
+- session: "user_id" (int), "site" (string)
+ - user_id => ID of the user as found in SECURITE database
+ - site => Sitename as found in SECURITE database
+
+- visit: "page" (string), "app" (string), "home" (bit 0/1)
+ - page => The visited page (may or not include the post parameters)
+ - app => The application name as found in SECURITE database
+ - home => Wether the page can be considered as an entry point for the app (= homepage)
+
+- click: "loc_x" (double), "loc_y" (double), "el" (string)
+ - loc_x => X location for the click, should be sent in percentage (0% is the left of the screen, 100% the right)
+ - loc_y => Y location for the click, should be sent in percentage (0% is the top of the screen, 100% the bottom)
+ - el => The clicked html element
+
+- serverCall: "infos" (string)
+	- infos => Informations about the call made by the web app to its back end (api path, parameters ...)
