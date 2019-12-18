@@ -1,0 +1,114 @@
+{
+script:{
+typeobj:'script',
+name:'Stats_usage Create Database and Tables',
+content:'CREATE DATABASE [stats_usage]
+GO
+
+CREATE TABLE [stats_usage].[dbo].[Click](
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[fk_visit] [int] NOT NULL,
+	[loc_x] [decimal](5, 2) NOT NULL,
+	[loc_y] [decimal](5, 2) NOT NULL,
+	[item] [varchar](max) NULL,
+ CONSTRAINT [PK_Click] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [stats_usage].[dbo].[Page](
+	[ID] [smallint] IDENTITY(1,1) NOT NULL,
+	[name] [varchar](1500) NOT NULL,
+	[app] [varchar](150) NOT NULL,
+	[home] [bit] NOT NULL,
+ CONSTRAINT [PK_Page] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [stats_usage].[dbo].[Scenario](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[pages] [varchar](5000) NOT NULL,
+ CONSTRAINT [PK_Scenario] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [stats_usage].[dbo].[ServerCall](
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[infos] [varchar](2500) NOT NULL,
+	[fk_session] [varchar](250) NOT NULL,
+	[date] [datetime] NOT NULL,
+ CONSTRAINT [PK_ServerCall] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [stats_usage].[dbo].[Session](
+	[code] [varchar](250) NOT NULL,
+	[user_id] [smallint] NOT NULL,
+	[date] [datetime] NOT NULL,
+	[site] [varchar](150) NULL,
+ CONSTRAINT [PK_Session] PRIMARY KEY CLUSTERED 
+(
+	[code] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [stats_usage].[dbo].[Visit](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[fk_page] [smallint] NOT NULL,
+	[fk_session] [varchar](250) NOT NULL,
+	[date] [datetime] NOT NULL,
+ CONSTRAINT [PK_Visit] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [stats_usage].[dbo].[Page] ADD  DEFAULT (\'\') FOR [app]
+GO
+ALTER TABLE [stats_usage].[dbo].[Page] ADD  DEFAULT ((0)) FOR [home]
+GO
+ALTER TABLE [stats_usage].[dbo].[Click]  WITH CHECK ADD  CONSTRAINT [FK_Click_Visit] FOREIGN KEY([fk_visit])
+REFERENCES [stats_usage].[dbo].[Visit] ([ID])
+GO
+ALTER TABLE [stats_usage].[dbo].[Click] CHECK CONSTRAINT [FK_Click_Visit]
+GO
+ALTER TABLE [stats_usage].[dbo].[ServerCall]  WITH CHECK ADD  CONSTRAINT [FK_ServerCall_Session] FOREIGN KEY([fk_session])
+REFERENCES [stats_usage].[dbo].[Session] ([code])
+GO
+ALTER TABLE [stats_usage].[dbo].[ServerCall] CHECK CONSTRAINT [FK_ServerCall_Session]
+GO
+ALTER TABLE [stats_usage].[dbo].[Visit]  WITH CHECK ADD  CONSTRAINT [FK_Visit_Page] FOREIGN KEY([fk_page])
+REFERENCES [stats_usage].[dbo].[Page] ([ID])
+GO
+ALTER TABLE [stats_usage].[dbo].[Visit] CHECK CONSTRAINT [FK_Visit_Page]
+GO
+ALTER TABLE [stats_usage].[dbo].[Visit]  WITH CHECK ADD  CONSTRAINT [FK_Visit_Session] FOREIGN KEY([fk_session])
+REFERENCES [stats_usage].[dbo].[Session] ([code])
+GO
+ALTER TABLE [stats_usage].[dbo].[Visit] CHECK CONSTRAINT [FK_Visit_Session]
+GO
+',
+comment:'Creates DB and tables for Stats_usage',
+mode:'0',
+author:'DL',
+type:'SQL',
+target:'None',
+version:'190',
+template:'0',
+files:{
+}
+}
+}
