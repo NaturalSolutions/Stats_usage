@@ -1,0 +1,4 @@
+pyodbc
+uuid
+websockets
+json
